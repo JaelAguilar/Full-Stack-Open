@@ -6,12 +6,11 @@ const Stats = ({allClicks, text, count, perc }) => {
   if (allClicks === 0) {
     
   }
-  return(
-    <div>
-      <p>
-        {text} {count} {perc}
-      </p>
-    </div>
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{count}{perc}</td>
+    </tr>
   )
 }
 
@@ -19,14 +18,20 @@ const Statistics = ({ good, neutral, bad, allClick, average, positive }) => {
   if (allClick === 0) {
     return (<div>No feedback given</div>)
   }
-  return(<div>
-    <Stats text="Good" count={good}></Stats>
-    <Stats text="Neutral" count={neutral}></Stats>
-    <Stats text="Bad" count={bad}></Stats>
-    <Stats text="All" count={allClick}></Stats>
-    <Stats text="Average" count={average}></Stats>
-    <Stats text="Positive" count={positive} perc="%"></Stats>
-  </div>)
+  return (
+    <div>
+      <table>
+        <tbody>
+        <Stats text="Good" count={good}></Stats>
+        <Stats text="Neutral" count={neutral}></Stats>
+        <Stats text="Bad" count={bad}></Stats>
+        <Stats text="All" count={allClick}></Stats>
+        <Stats text="Average" count={average}></Stats>
+        <Stats text="Positive" count={positive} perc="%"></Stats>
+        </tbody>
+        </table>
+    </div>
+  )
 
     
 }
