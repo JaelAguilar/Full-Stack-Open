@@ -2,7 +2,34 @@ import React, { useState } from "react";
 
 const Button = ({ text, func }) => (<button onClick={func}>{text}</button>)
 
-const Stats = ({ text, count, perc }) => (<div><p>{text} {count} {perc}</p></div>)
+const Stats = ({allClicks, text, count, perc }) => {
+  if (allClicks === 0) {
+    
+  }
+  return(
+    <div>
+      <p>
+        {text} {count} {perc}
+      </p>
+    </div>
+  )
+}
+
+const Statistics = ({ good, neutral, bad, allClick, average, positive }) => {
+  if (allClick === 0) {
+    return (<div>No feedback given</div>)
+  }
+  return(<div>
+    <Stats text="Good" count={good}></Stats>
+    <Stats text="Neutral" count={neutral}></Stats>
+    <Stats text="Bad" count={bad}></Stats>
+    <Stats text="All" count={allClick}></Stats>
+    <Stats text="Average" count={average}></Stats>
+    <Stats text="Positive" count={positive} perc="%"></Stats>
+  </div>)
+
+    
+}
 
 const Title = ({ title }) => (<div><h2>{title}</h2></div>)
 
@@ -13,30 +40,33 @@ const App = () => {
   const [bad, setBad] = useState(0)
 
   //Sets all the stats
-  const [all, setAll] = useState(0)
+  const [allClick, setAll] = useState(0)
   const [average, setAverage] = useState(0)
   const [positive, setPositive] = useState(0)
 
- 
+  
+
   const increaseGood = () => {
     setGood(good + 1)
-    setAll(all + 1)
-    setAverage((good - bad + 1) / (all + 1))
-    setPositive(100 * (good + 1) / (all + 1))
+    setAll(allClick + 1)
+    setAverage((good - bad + 1) / (allClick + 1))
+    setPositive(100 * (good + 1) / (allClick + 1))
   }
   
   const increaseNeutral = () => {
     setNeutral(neutral + 1)
-    setAll(all + 1)
-    setAverage((good - bad) / (all + 1))
-    setPositive(100*(good) / (all + 1))
+    setAll(allClick + 1)
+    setAverage((good - bad) / (allClick + 1))
+    setPositive(100*(good) / (allClick + 1))
   }
   const increaseBad = () => {
     setBad(bad + 1)
-    setAll(all + 1)
-    setAverage((good - bad - 1) / (all + 1))
-    setPositive(100*(good) / (all + 1))
+    setAll(allClick + 1)
+    setAverage((good - bad - 1) / (allClick + 1))
+    setPositive(100*(good) / (allClick + 1))
   }
+
+  
 
   return (
     <div>
@@ -45,16 +75,10 @@ const App = () => {
       <Button text="Neutral" func={increaseNeutral}></Button>
       <Button text="Bad" func={increaseBad}></Button>
       <Title title="Statistics"></Title>
+      <Statistics good={good} neutral={neutral} bad = {bad} allClick={allClick} average={average} positive={positive}></Statistics>
 
-      <Stats text="Good" count={good}></Stats>
-      <Stats text="Neutral" count={neutral}></Stats>
-      <Stats text="Bad" count={bad}></Stats>
-      <Stats text="All" count={all}></Stats>
-      <Stats text="Average" count={average}></Stats>
-      <Stats text="Positive" count={positive} perc="%"></Stats>
     </div>
   )
 }
 
 export default App;
-
