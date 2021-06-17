@@ -1,6 +1,9 @@
 import React, { useState } from "react"
 
+const Title = ({ text }) => (<div><h2>{text}</h2></div>)
+
 const Display = ({ text }) => (<div>{text}</div>)
+
 const Info = ({ count }) => (<div>Has {count} votes</div>)
 
 const Button = ({ func, text }) => (<button onClick={func}>{text}</button>)
@@ -17,23 +20,32 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
-  const [votes, setVotes] = useState([0,0,0,0,0,0,0])
-
+  
+  const [votes, setVotes] = useState([0, 0, 0, 0, 0, 0, 0])
+  
+  //Max is the index of the maximum number of votes
+  const [max, setMax] = useState(0)
+  
   const changeAnecdote = () => (setSelected(Math.floor(Math.random() * 7)))
   
   const vote = () => {
     let newVotes = [...votes]
     newVotes[selected] += 1
     setVotes(newVotes)
-    
+    //Here max = index of newVotes in which the max value is located
+    setMax(newVotes.indexOf(Math.max(...newVotes)))    
   }
+
   return (
     <div>
+      <Title text= "Anecdote of the day"></Title>
       <Display text={anecdotes[selected]}></Display>
       <Info count = {votes[selected]}></Info>
       <Button func={vote} text="vote"></Button>
       <Button func={changeAnecdote} text="Next Anecdote"></Button>
-     
+      <Title text="Anecdote with most votes"></Title>
+      <Display text={anecdotes[max]}></Display>
+      <Info count={votes[max]}></Info>
     </div>
   )
 }
