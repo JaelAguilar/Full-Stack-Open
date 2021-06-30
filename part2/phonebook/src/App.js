@@ -1,4 +1,45 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+
+const Filter = ({searchValue, handleSearch}) => (
+  <div>
+    Filter shown with{" "}
+    <input value={searchValue} onChange={handleSearch}></input>
+  </div>
+)
+
+const PersonForm = ({newName, handleNewName, newNumber, handleNewNumber, addPerson}) => (
+  <form>
+    <div>
+      name: <input value={newName} onChange={handleNewName} />
+    </div>
+    <div>
+      number: <input value={newNumber} onChange={handleNewNumber} />
+    </div>
+    <div>
+      <button type="submit" onClick={addPerson}>
+        Add
+      </button>
+    </div>
+  </form>
+)
+
+const Persons = ({isFiltered, persons, searchValue}) => (
+  <div>
+    {isFiltered
+      ? persons
+          .filter((person) => person.name.includes(searchValue))
+          .map((person) => (
+            <div key={person.key}>
+              {person.name} : {person.number}
+            </div>
+          ))
+      : persons.map((person) => (
+          <div key={person.key}>
+            {person.name} : {person.number}
+          </div>
+        ))}
+  </div>
+)
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -45,48 +86,22 @@ const App = () => {
     setSearchValue(event.target.value)
     console.log(searchValue)
     showFiltered(searchValue !== '' ? true : false)
-
-    
   }
     
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Filter shown with{" "}
-        <input value={searchValue} onChange={handleSearch}></input>
-      </div>
-      <h2>Add a new Number</h2>
-      <form>
-        <div>
-          name: <input value={newName} onChange={handleNewName} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNewNumber} />
-        </div>
-        <div>
-          <button type="submit" onClick={addPerson}>
-            Add
-          </button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <div>
-        {isFiltered
-          ? persons
-              .filter((person) => person.name.includes(searchValue))
-              .map((person) => (
-                <div key={person.key}>
-                  {person.name} : {person.number}
-                </div>
-              ))
-          : persons.map((person) => (
-              <div key={person.key}>
-                {person.name} : {person.number}
-              </div>
-            ))}
-      </div>
+
+      <Filter searchValue={searchValue} handleSearch={handleSearch} />
+      
+      <h3>Add a new Number</h3>
+
+      <PersonForm newName={newName} handleNewName={handleNewName} newNumber={newNumber} handleNewNumber={handleNewNumber} addPerson={addPerson} />
+      
+      <h3>Numbers</h3>
+
+      <Persons isFiltered={isFiltered} persons={persons} searchValue={searchValue}/>
     </div>
   )
 }
