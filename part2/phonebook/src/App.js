@@ -10,7 +10,9 @@ const App = () => {
   ])
 
   const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber]=useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [searchValue, setSearchValue] = useState('')
+  const [isFiltered, showFiltered] = useState(false)
 
   const handleNewName = (event) => {
   setNewName(event.target.value)
@@ -36,12 +38,26 @@ const App = () => {
       setNewName("")
       setNewNumber('')
     }
-    }
+  }
+  
+  const handleSearch = (event) => {
+    
+    setSearchValue(event.target.value)
+    console.log(searchValue)
+    showFiltered(searchValue !== '' ? true : false)
+
+    
+  }
     
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        Filter shown with{" "}
+        <input value={searchValue} onChange={handleSearch}></input>
+      </div>
+      <h2>Add a new Number</h2>
       <form>
         <div>
           name: <input value={newName} onChange={handleNewName} />
@@ -56,11 +72,20 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <div>debug: {newName}</div>
       <div>
-        {persons.map((person) => (
-          <div key={person.key}>{person.name} : { person.number}</div>
-        ))}
+        {isFiltered
+          ? persons
+              .filter((person) => person.name.includes(searchValue))
+              .map((person) => (
+                <div key={person.key}>
+                  {person.name} : {person.number}
+                </div>
+              ))
+          : persons.map((person) => (
+              <div key={person.key}>
+                {person.name} : {person.number}
+              </div>
+            ))}
       </div>
     </div>
   )
